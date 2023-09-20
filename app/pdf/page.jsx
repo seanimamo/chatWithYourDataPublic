@@ -15,7 +15,7 @@ import "../globals.css";
 // This functional component is responsible for loading PDFs
 const PDFLoader = () => {
   // Managing prompt, messages, and error states with useState
-  const [prompt, setPrompt] = useState("How to get rich?");
+  const [prompt, setPrompt] = useState("How does XXX work?");
   const [messages, setMessages] = useState([
     {
       text: "Hi, I'm your AI assistant. What would you like to know?",
@@ -132,6 +132,15 @@ const PDFLoader = () => {
     }
   };
 
+  const resetPineconeIndex = async () => {
+    try {
+      const { queryResponse } = await axios.post("/api/reset-pinecone-index");
+      console.log('cleint deleteIndex resposne', queryResponse)
+    } catch (err) {
+      console.log("failed to delete index", err);
+    }
+  }
+
   // The component returns a two column layout with various child components
   return (
     <>
@@ -141,11 +150,10 @@ const PDFLoader = () => {
           <>
             <PageHeader
               heading="Ask Ai about your Documents"
-              boldText="How to get rich? How to be happy?"
+
               description="This tool will
-            let you ask anything contained in a PDF document. This tool uses
-            Embeddings, Pinecone, VectorDBQAChain, and VectorStoreAgents. Head over to Module 1 to
-            get started!"
+            let you ask anything contained in a document. This tool uses
+            Embeddings, Pinecone, VectorDBQAChain, and VectorStoreAgents."
             />
             <ButtonContainer>
               {/* <Button
@@ -166,6 +174,7 @@ const PDFLoader = () => {
               /> */}
 
               <div>
+                <h1>Select a file to Upload</h1>
                 <input type="file" onChange={handleFileChange} />
               </div>
             </ButtonContainer>
@@ -179,7 +188,7 @@ const PDFLoader = () => {
               handlePromptChange={handlePromptChange}
               handleSubmit={() => handleSubmitPrompt("/pdf-query")}
               // handleSubmit={() => handleSubmitQuery("/pdfquery-agent")}
-              placeHolderText={"How to get rich?"}
+              placeHolderText={"How does XXX work?"}
               error={error}
             />
           </>
